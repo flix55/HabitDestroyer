@@ -1,4 +1,6 @@
 # HabitDestroyer
+
+![Image of Yaktocat](file:///C:/Users/Felix/Desktop/pythonScript/aplication/HabitDestroyer/HabitDestroyerIconBanner.png)
 The HabitDestroyer is a one going program to eliminate my shitty habits.
 
 *The current code does not work on other devices since the path system is not set propeply*
