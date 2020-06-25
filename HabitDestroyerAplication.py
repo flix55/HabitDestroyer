@@ -5,13 +5,12 @@ from datetime import datetime as dt
 import sys
 from tkinter import *
 #print(sys.version)
-#fix the freeze appplication when I try to pause Habitdetroyer
 #polih
 
 hosts_temp="hosts"
 hosts_path=r"C:\Windows\System32\drivers\etc\hosts"
 redirect="127.0.0.1"
-website_list=["www.facebook.com","facebook.com","https://20xx.io/nxc/#login","youtube.com","https://www.youtube.com/","https://twitter.com","https://twitter.com/home","https://www.youtube.com/feed/subscriptions","https://discord.com/","https://discord.com/app","https://discord.com/channels/@me"]
+website_list=["www.facebook.com","facebook.com","https://20xx.io/nxc/#login","youtube.com","https://www.youtube.com/","https://twitter.com","https://twitter.com/home","https://www.youtube.com/feed/subscriptions","https://discord.com/","https://discord.com/app","https://discord.com/channels/@me","www.youtube.com"]
 
 timeInDay = 6
 timeOutDay = 17
@@ -22,7 +21,7 @@ extreme = False
 buttonWait = 500
 boolShutDown = False
 
-DisableMinuteLeft = 300
+DisableMinuteLeft = 100000
 freeNavigation = False
 
 def HabitDestroyer():
@@ -38,12 +37,15 @@ def NightNight():
 	ctypes.windll.user32.SystemParametersInfoW(20, 0, r"C:\Users\Felix\Desktop\pythonScript\aplication\obamaSleeping.jpg" , 0)
 	#FindProgram('Discord.exe')
 	#FindProgram('Dolphin.exe')
+	if extreme.get() == True:
+		if dt.now() > dt(dt.now().year,dt.now().month,dt.now().day,23):
+			os.startfile(r'C:\Users\Felix\Desktop\videoAndBlogsIdeas\Writing\Write.docx', 'open')
+
 	os.system("TASKKILL /f /im Discord.exe")
 	os.system("TASKKILL /f /im Dolphin.exe")
 	os.system("TASKKILL /f /im steam.exe")
-	if extreme.get() == True:
-		os.system("TASKKILL /f /im Spotify.exe")
-		os.system("TASKKILL /f /im Chrome.exe")
+	os.system("TASKKILL /f /im Spotify.exe")
+	os.system("TASKKILL /f /im Chrome.exe")
 
 def hostsFileAragement():
 	with open(hosts_path,'r+') as file:
@@ -82,22 +84,31 @@ def FindProgram(imgName):
 	        	os.system("TASKKILL /F /IM" + " " + imgName)
 
 def loopingClock():
+	global freeNavigation
+	global DisableMinuteLeft
 	while True:
 		if dt(dt.now().year,dt.now().month,dt.now().day,timeInDay) < dt.now() < dt(dt.now().year,dt.now().month,dt.now().day,timeOutDay):
-			print("working hours")
+			#print("working hours")
 			hostsFileAragement()
 			HabitDestroyer()
 		elif dt(dt.now().year,dt.now().month,dt.now().day,timeInNight) < dt.now() < dt(dt.now().year,dt.now().month,dt.now().day + 1,timeOutNight):
-			print("sleeping hours")
+			#print("sleeping hours")
 			hostsFileAragement()
 			NightNight()
-		elif dt.now() > dt(dt.now().year,dt.now().month,dt.now().day,23):
-			os.startfile(r'C:\Users\Felix\Desktop\videoAndBlogsIdeas\Writing\Write.docx', 'open')
 		else:
 			hostsFileAragement2()
-			print("fun hours")
+			#print("fun hours")
 			ctypes.windll.user32.SystemParametersInfoW(20, 0, r"C:\Users\Felix\Desktop\pythonScript\aplication\obama.jpg" , 0)
-		root.after(5000,loopingClock)
+
+		if freeNavigation == True:
+			#print("before")
+			root.after(int(DisableMinuteLeft),loopingClock)
+			#print("after")
+			freeNavigation = False
+			DisableMinuteLeft /= 2	
+		else:
+			#print("lopping")
+			root.after(5000,loopingClock)
 		break		
 
 def Display_time():
@@ -115,11 +126,9 @@ window.overrideredirect(1)
 textForTimer = "Disable" + " : " +str(DisableMinuteLeft) 
 def TimerStuff():
 	global DisableMinuteLeft
+	global freeNavigation
 	freeNavigation = True
-	time.sleep(DisableMinuteLeft)
-	DisableMinuteLeft /= 2
-	freeNavigation = False
-	textForTimer = "Disable" + " : " +str(DisableMinuteLeft) + " seconde"
+	textForTimer = "Disable" + " : " +str('%g'%(DisableMinuteLeft)) + " seconde"
 	DisableApp['text'] = textForTimer
 
 canvas = tk.Canvas(window,height=1920,width=1080,bg='#090913')
